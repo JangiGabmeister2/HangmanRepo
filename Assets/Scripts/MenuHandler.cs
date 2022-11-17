@@ -8,6 +8,7 @@ public enum GameStates { MenuState, GameState }
 
 public class MenuHandler : MonoBehaviour
 {
+    #region MenuHandler Instance
     private static MenuHandler _menuHandler;
 
     public MenuHandler menuHandlerInstance
@@ -29,13 +30,17 @@ public class MenuHandler : MonoBehaviour
     private void Awake()
     {
         menuHandlerInstance = this;
-    }
+    } 
+    #endregion
 
     public GameObject[] panels;
 
     public PanelStates panelStates;
     public GameStates gameStates;
 
+    public GameManager _gameManager;
+
+    #region Panel States
     public void ChangePanel(int value)
     {
         panelStates = (PanelStates)value;
@@ -68,7 +73,9 @@ public class MenuHandler : MonoBehaviour
                 break;
         }
     }
+    #endregion
 
+    #region Game States
     public void NextState()
     {
         switch (gameStates)
@@ -83,13 +90,16 @@ public class MenuHandler : MonoBehaviour
                 StartCoroutine(MenuState());
                 break;
         }
-    }
+    } 
+    #endregion
 
     public void PlayButton()
     {
         gameStates = GameStates.GameState;
 
         NextState();
+
+        _gameManager.NewGame();
     }
 
     public void QuitButton()
@@ -102,12 +112,14 @@ public class MenuHandler : MonoBehaviour
 
     public void ResumeButton()
     {
-        PlayButton();
+        gameStates = GameStates.GameState;
+
+        NextState();
     }
 
     public void RestartButton()
     {
-        //NewGame();
+        PlayButton();
     }
 
     private void Start()
