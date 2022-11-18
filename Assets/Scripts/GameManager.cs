@@ -23,23 +23,33 @@ public class GameManager : MonoBehaviour
     public InputField guessWord; //the input field for if the player can guess the word with the guesses they've made.
 
     private int wordLength; //the number of characters in the chosen word
-    private int wrongGuesses = 0;
+    public int wrongGuesses = 0;
 
     private bool drawingComplete = false; //if drawing is complete, player lose
     private bool wordComplete = false; //if word is complete, player wins
 
-    public void NewGame() //starts a new game
+    public void NewGame() //starts a new game, resets everything from last game
     {
-        wrongGuesses = 0;
-        drawingComplete = false;
-        wordComplete = false;
+        wrongGuesses = 0; //number of wrong guess now 0
+        drawingComplete = false; //drawing is not complete
+        wordComplete = false; //word is not complete
 
-        chosenWord.Clear();
-        wordBoardCharacters.Clear();
+        chosenWord.Clear(); //clears the chosen word, so it is set as new random word
+        wordBoardCharacters.Clear(); //clears the word board, so it is set with new number of characters
 
-        foreach (Transform child in wordBoard)
+        foreach (Transform child in wordBoard) //destroys all character holders in the word board panel
         {
             GameObject.Destroy(child.gameObject);
+        }
+
+        for (int i = 0; i < keyBoardKeys.Length; i++) //re enables interactability of all keyboard keys
+        {
+            keyBoardKeys[i].interactable = true;
+        }
+
+        for (int i = 0; i < drawings.Length; i++) //hides all drawing sections
+        {
+            drawings[i].SetActive(false);
         }
 
         StartCoroutine(ChooseRandomWord()); //chooses a new word for every new game
@@ -53,7 +63,7 @@ public class GameManager : MonoBehaviour
 
         fullWord = chooseWord; //sets the completed/full word as the random word
 
-        string[] characters = new string[chooseWord.Length];
+        string[] characters = new string[chooseWord.Length]; //creates a new string which is the same length as chooseword word count
 
         for (int i = 0; i < chooseWord.Length; i++) 
         {
@@ -76,9 +86,9 @@ public class GameManager : MonoBehaviour
 
         for (int i = 0; i < keyBoardKeys.Length; i++)
         {
-            if (keyBoardKeys[i].name == letterGuess)
+            if (keyBoardKeys[i].name == letterGuess) //checks all keyboard keys if its name is the same as the letter guess
             {
-                keyBoardKeys[i].interactable = false;
+                keyBoardKeys[i].interactable = false; //then disables its interaction
             }
         }
 
@@ -87,9 +97,9 @@ public class GameManager : MonoBehaviour
 
     public void InputWord()
     {
-        string word = guessWord.text;
+        string word = guessWord.text; //sets the word from the input field to a string variable
 
-        StartCoroutine(CheckWord(word));
+        StartCoroutine(CheckWord(word)); //checks if the guessed word == the random word
     }
 
     IEnumerator CheckLetter(string letter)
@@ -100,8 +110,18 @@ public class GameManager : MonoBehaviour
         {
             if (chosenWord[i] == letter)
             {
-                wordBoardCharacters[i].text = letter;
+                wordBoardCharacters[i].text = letter; //if the guessed letter is in the random word, then it shows up on the word board.
             }
+        }
+
+        if (chosenWord.Contains(letter)) //checks if the word board has the guessed letter
+        {
+
+        }
+        else
+        {
+            wrongGuesses++; //if not, increases number of wrong guesses
+            drawings[wrongGuesses - 1].SetActive(true); //then shows a drawing section corresponding to wrong guess number.
         }
 
         yield return new WaitForSeconds(1f);
@@ -111,7 +131,11 @@ public class GameManager : MonoBehaviour
     {
         if (word == fullWord)
         {
-            //player wins
+
+        }
+        else
+        {
+
         }
 
         yield return null;

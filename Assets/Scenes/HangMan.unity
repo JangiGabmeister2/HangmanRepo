@@ -1630,7 +1630,7 @@ GameObject:
   - component: {fileID: 255412254}
   - component: {fileID: 255412255}
   m_Layer: 5
-  m_Name: Arm
+  m_Name: leftarm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2011,7 +2011,7 @@ GameObject:
   - component: {fileID: 281864926}
   - component: {fileID: 281864927}
   m_Layer: 5
-  m_Name: Line (3)
+  m_Name: foundation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2448,7 +2448,7 @@ GameObject:
   - component: {fileID: 413555858}
   - component: {fileID: 413555859}
   m_Layer: 5
-  m_Name: Line (2)
+  m_Name: post
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2776,16 +2776,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Padding:
-    m_Left: 0
-    m_Right: 0
+    m_Left: 50
+    m_Right: 50
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 3
   m_Spacing: 0
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 1
   m_ChildControlWidth: 0
-  m_ChildControlHeight: 1
+  m_ChildControlHeight: 0
   m_ChildScaleWidth: 1
   m_ChildScaleHeight: 1
   m_ReverseArrangement: 0
@@ -3295,7 +3295,7 @@ GameObject:
   - component: {fileID: 648010914}
   - component: {fileID: 648010915}
   m_Layer: 5
-  m_Name: Arm (1)
+  m_Name: rightarm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3464,7 +3464,7 @@ GameObject:
   - component: {fileID: 703602673}
   - component: {fileID: 703602674}
   m_Layer: 5
-  m_Name: Line
+  m_Name: rope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5018,7 +5018,7 @@ GameObject:
   - component: {fileID: 1032249058}
   - component: {fileID: 1032249059}
   m_Layer: 5
-  m_Name: Body
+  m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7437,7 +7437,7 @@ GameObject:
   - component: {fileID: 1587380754}
   - component: {fileID: 1587380755}
   m_Layer: 5
-  m_Name: Leg (1)
+  m_Name: rightleg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7526,7 +7526,7 @@ GameObject:
   - component: {fileID: 1632860130}
   - component: {fileID: 1632860131}
   m_Layer: 5
-  m_Name: Circle
+  m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7695,7 +7695,7 @@ GameObject:
   - component: {fileID: 1649810894}
   - component: {fileID: 1649810895}
   m_Layer: 5
-  m_Name: Line (1)
+  m_Name: bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8828,7 +8828,7 @@ GameObject:
   - component: {fileID: 1962217352}
   - component: {fileID: 1962217353}
   m_Layer: 5
-  m_Name: Leg
+  m_Name: leftleg
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
