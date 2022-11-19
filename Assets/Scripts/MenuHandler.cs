@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PanelStates { MenuPanel, GamePanel, PausePanel }
+public enum PanelStates { MenuPanel, GamePanel, PausePanel, PlayAgain }
 
 public enum GameStates { MenuState, GameState }
 
@@ -63,6 +63,9 @@ public class MenuHandler : MonoBehaviour
                 break;
             case PanelStates.PausePanel:
                 panels[2].SetActive(true);
+                break;
+            case PanelStates.PlayAgain:
+                panels[3].SetActive(true);
                 break;
             default:
                 for (int i = 0; i < panels.Length; i++)
