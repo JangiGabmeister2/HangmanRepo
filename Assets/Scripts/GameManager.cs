@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour
     public string[] wordList; //10 random words I've come up with, the computer chooses 1 of these for each game
     public List<string> chosenWord = new List<string>(); //a list of string/chars of the word's individual characters
     public string[] correctLetters; //an array of string/chars of every correct guess
-    public string fullWord;
+    public string fullWord; //the full unsplit chosen word, used for word guesses
 
     public GameObject characterHolder; //the prefab for holding the character
     public Transform wordBoard; //the panel which holds the prefab ^^
@@ -23,8 +23,8 @@ public class GameManager : MonoBehaviour
     public Button[] keyBoardKeys; //the keys in the game panel. Just so i can put them into a for loop and disable their interactivity whenever the player chooses a letter, and if that letter has been used already.
 
     public InputField guessWord; //the input field for if the player can guess the word with the guesses they've made.
-
     public Text endText; //the text on the play again panel, tells player if they've won or lost the game, then asks if they'll play again
+    public Button yes, no; //will enable interaction on game end.
 
     private int wrongGuesses; //the number of wrong guesses the player has made
 
@@ -38,6 +38,9 @@ public class GameManager : MonoBehaviour
         wrongGuesses = 0; //number of wrong guess reset to 0
         drawingComplete = false; //drawing is not complete
         wordComplete = false; //word is not complete
+
+        yes.interactable = false; //sets play again button as uninteractable
+        no.interactable = false; //set quit button as uninteractable
 
         guessWord.text = ""; //sets input field empty
 
@@ -140,13 +143,13 @@ public class GameManager : MonoBehaviour
             StartCoroutine(CheckDrawing()); //check if drawing is complete 
         }
 
-        PlayerWin();
+        PlayerWin(); //checks if the player has won
 
-        if (PlayerWin())
+        if (PlayerWin()) //if player has won
         {
-            wordComplete = true;
+            wordComplete = true; //sets word complete bool to true = which sets play again panel to say "you have won the game"
 
-            StartCoroutine(EndGame());
+            StartCoroutine(EndGame()); //starts the end game process
         }
 
         yield return new WaitForSeconds(1f);
@@ -156,15 +159,15 @@ public class GameManager : MonoBehaviour
     #region Check if the word is complete
     bool PlayerWin()
     {
-        for (int i = 0; i < chosenWord.Count; i++)
+        for (int i = 0; i < chosenWord.Count; i++) //for every letter in chosen word,...
         {
-            if (chosenWord[i] != correctLetters[i])
+            if (chosenWord[i] != correctLetters[i]) //check if letter is not in the correct guesses list
             {
-                return false;
+                return false; //if letter is not there, returns false
             }
         }
 
-        return true;
+        return true; //otherwise, returns true
     }
     #endregion
 
@@ -173,11 +176,11 @@ public class GameManager : MonoBehaviour
     {
         if (word == fullWord) //checks if the input word is the same as the chosen word
         {
-            wordComplete = true;
+            wordComplete = true; //if true, sets word complete bool to true = which sets play again panel to say "you won the game"
 
-            for (int i = 0; i < chosenWord.Count; i++)
+            for (int i = 0; i < chosenWord.Count; i++) //for every letter in the chosen word,...
             {
-                correctLetters[i] = chosenWord[i];
+                correctLetters[i] = chosenWord[i]; //sets all possible guesses as that letter
             }
 
             for (int i = 0; i < correctLetters.Length; i++) //for every index inside the checking word list,...
@@ -205,19 +208,22 @@ public class GameManager : MonoBehaviour
     #region Check if drawing is complete
     IEnumerator CheckDrawing()
     {
-        if (wrongGuesses == 10)
+        if (wrongGuesses == 10) //checks if 10 wrong guesses have been made (all drawings should have shown up by this point)
         {
-            drawingComplete = true;
+            drawingComplete = true; //sets drawing complete bool to true = which sets play again panel title to "you lost the game"
 
-            StartCoroutine(EndGame());
+            StartCoroutine(EndGame()); //executes the end game coroutine
         }
 
         yield return null;
     }
     #endregion
 
+    #region Play Again
     IEnumerator EndGame() //whether the player wins or loses, this is executed
     {
+        yield return new WaitForSeconds(1f);
+
         for (int i = 0; i < drawings.Length; i++)
         {
             drawings[i].SetActive(false);
@@ -238,9 +244,11 @@ public class GameManager : MonoBehaviour
 
         endText.text = "Will you\nplay again?";
 
+        yes.interactable = true;
+        no.interactable = true;
+
         menuHandler.menuHandlerInstance.gameStates = GameStates.MenuState; //sets game state to menu state = stops all game processes
         menuHandler.menuHandlerInstance.NextState(); //activates the game state change
-        yield return null;
     }
-
+    #endregion
 }
