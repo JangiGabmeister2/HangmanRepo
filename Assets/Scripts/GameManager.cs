@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour
 
     public InputField guessWord; //the input field for if the player can guess the word with the guesses they've made.
     public Text endText; //the text on the play again panel, tells player if they've won or lost the game, then asks if they'll play again
+    public Text alertText; //to alert the player on result of actions
     public Button yes, no; //will enable interaction on game end.
 
     private int wrongGuesses; //the number of wrong guesses the player has made
@@ -56,7 +57,7 @@ public class GameManager : MonoBehaviour
         {
             keyBoardKeys[i].interactable = true;
         }
-            
+
         for (int i = 0; i < drawings.Length; i++) //hides all drawing sections
         {
             drawings[i].SetActive(false);
@@ -91,6 +92,8 @@ public class GameManager : MonoBehaviour
             wordBoardCharacters.Add(temp.GetComponent<Text>()); //instantiates the prefab for each letter in the word ( 3 letters = 3 prefabs )
         }
 
+        alertText.text = "A random word has been chosen. Guess it correctly or else the man will be hanged!"; //alerts the player that a random word has been chosen
+
         yield return new WaitForSeconds(2f);
     }
     #endregion
@@ -116,6 +119,7 @@ public class GameManager : MonoBehaviour
     public void InputWord()
     {
         string word = guessWord.text; //sets the word from the input field to a string variable
+        word = word.ToUpper(); //sets the guessed word to uppercase, if not already.
 
         StartCoroutine(CheckWord(word)); //checks if the guessed word == the random word
     }
@@ -135,18 +139,29 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (chosenWord.Contains(letter)) { } //checks if the word board has the guessed letter        
+        if (chosenWord.Contains(letter)) //checks if the word board has the guessed letter  
+        {
+            alertText.text = $"The word does contain the letter {letter}.";
+        }
         else
         {
+            alertText.text = $"The word does not contain the letter {letter}.";
+
             wrongGuesses++; //if not, increases number of wrong guesses
             drawings[wrongGuesses - 1].SetActive(true); //then shows a drawing section corresponding to wrong guess number.
-            StartCoroutine(CheckDrawing()); //check if drawing is complete 
+            StartCoroutine(CheckDrawing()); //check if drawing is complete
         }
+
+        yield return new WaitForSeconds(2f);
+
+        alertText.text = "";
 
         PlayerWin(); //checks if the player has won
 
         if (PlayerWin()) //if player has won
         {
+            alertText.text = $"You have done it! The word was {fullWord}";
+
             wordComplete = true; //sets word complete bool to true = which sets play again panel to say "you have won the game"
 
             StartCoroutine(EndGame()); //starts the end game process
@@ -174,8 +189,12 @@ public class GameManager : MonoBehaviour
     #region Check if guessed word is the chosen word
     IEnumerator CheckWord(string word)
     {
+        yield return new WaitForSeconds(1f);
+
         if (word == fullWord) //checks if the input word is the same as the chosen word
         {
+            alertText.text = $"You have guessed correctly. The word is {word}.";
+
             wordComplete = true; //if true, sets word complete bool to true = which sets play again panel to say "you won the game"
 
             for (int i = 0; i < chosenWord.Count; i++) //for every letter in the chosen word,...
@@ -189,12 +208,14 @@ public class GameManager : MonoBehaviour
                                                                  //shows the input word on the word board
             }
 
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(3f);
 
             StartCoroutine(EndGame()); //starts the end game process
         }
         else //if the input word is NOT the chosen word
         {
+            alertText.text = $"You have guessed incorrectly. The word is not {word}.";
+
             guessWord.text = ""; //the input field becomes blank
 
             wrongGuesses++; //increases the wrong guesses by 1
@@ -210,7 +231,18 @@ public class GameManager : MonoBehaviour
     {
         if (wrongGuesses == 10) //checks if 10 wrong guesses have been made (all drawings should have shown up by this point)
         {
+            for (int i = 0; i < keyBoardKeys.Length; i++) //disables all keyboard keys
+            {
+                keyBoardKeys[i].interactable = false;
+            }
+
+            yield return new WaitForSeconds(3f);
+
             drawingComplete = true; //sets drawing complete bool to true = which sets play again panel title to "you lost the game"
+
+            alertText.text = "The game is over, the man has been hung.";
+
+            yield return new WaitForSeconds(2f);
 
             StartCoroutine(EndGame()); //executes the end game coroutine
         }
